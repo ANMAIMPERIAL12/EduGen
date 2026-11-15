@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart3, Plus, Users, ClipboardCheck, CalendarCheck } from "lucide-react";
+import { BarChart3, Plus, Users, ClipboardCheck, CalendarCheck, Download, Trash2 } from "lucide-react";
 import { AIInsightCard } from "../../components/ai/AIComponents";
 import { ActivityAreaChart, DistributionChart, PerformanceLineChart, SubjectBarChart } from "../../components/charts/Charts";
 import { PageHeader } from "../../components/layout/PageHeader";
@@ -17,6 +17,25 @@ import { NotificationsPage, ProfilePage, ResourcesPage, SettingsPage } from "../
 import { useNavigate } from "react-router-dom";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { CourseMaterialsManager } from "../../components/courses/CourseMaterialsManager";
+import { quizService, type QuizReportRequest } from "../../services/quizService";
+
+type QuizReportResultForm = {
+  student_name: string;
+  student_email: string;
+  score: string;
+  total: string;
+  time_taken_seconds: string;
+  submitted_at: string;
+};
+
+const emptyQuizReportResult = (): QuizReportResultForm => ({
+  student_name: "",
+  student_email: "",
+  score: "",
+  total: "",
+  time_taken_seconds: "",
+  submitted_at: "",
+});
 
 export function TeacherDashboard() {
   return (
@@ -140,6 +159,71 @@ export function TeacherUploadPage() {
 }
 
 export function TeacherAIReportsPage() {
+  const [quizTitle, setQuizTitle] = useState("");
+  const [className, setClassName] = useState("");
+  const [results, setResults] = useState<QuizReportResultForm[]>([
+    emptyQuizReportResult(),
+  ]);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState("");
+
+  async function exportQuizReport(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setExportError("");
+
+    const invalidResult = results.find(
+      (result) =>
+        !result.student_name.trim() ||
+        !Number.isInteger(Number(result.score)) ||
+        !Number.isInteger(Number(result.total)) ||
+        Number(result.total) < 1 ||
+        Number(result.score) < 0 ||
+        Number(result.score) > Number(result.total) ||
+        (result.time_taken_seconds !== "" &&
+          (!Number.isInteger(Number(result.time_taken_seconds)) ||
+            Number(result.time_taken_seconds) < 0)),
+    );
+    if (invalidResult) {
+      setExportError(
+        "Enter a student name, a valid score and total, and a non-negative time.",
+      );
+      return;
+    }
+
+    const report: QuizReportRequest = {
+      quiz_title: quizTitle.trim(),
+      class_name: className.trim(),
+      results: results.map((result) => ({
+        student_name: result.student_name.trim(),
+        student_email: result.student_email.trim(),
+        score: Number(result.score),
+        total: Number(result.total),
+        time_taken_seconds:
+          result.time_taken_seconds === ""
+            ? null
+            : Number(result.time_taken_seconds),
+        submitted_at: result.submitted_at,
+      })),
+    };
+
+    setExporting(true);
+    try {
+      const file = await quizService.exportReport(report);
+      const downloadUrl = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = "quiz_report.xlsx";
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
+    } catch (error) {
+      setExportError(
+        error instanceof Error ? error.message : "Quiz report export failed.",
+      );
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <>
       <PageHeader title="AI Reports" subtitle="Class weak topics and students requiring attention." />
@@ -147,6 +231,187 @@ export function TeacherAIReportsPage() {
         <Card><h2 className="mb-4 font-semibold">Class Weak Topics</h2>{weakTopics.slice(3).map((topic) => <div key={topic.topic} className="mb-4"><div className="mb-1 flex justify-between text-sm"><span>{topic.topic}</span><span>{topic.score}%</span></div><ProgressBar value={topic.score} /></div>)}</Card>
         <Card><h2 className="mb-4 font-semibold">Students At Risk</h2>{students.filter((student) => student.status !== "Active").map((student) => <div key={student.id} className="mb-3 rounded-md bg-slate-50 p-3 dark:bg-slate-800"><p className="font-semibold">{student.name}</p><p className="text-sm text-slate-500">{student.status}</p></div>)}</Card>
       </div>
+      <Card>
+        <h2 className="font-semibold">Export quiz results</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Download an Excel report using the results you provide.
+        </p>
+        <form className="mt-4 grid gap-4" onSubmit={exportQuizReport}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="quiz-report-title">Quiz title</Label>
+              <Input
+                id="quiz-report-title"
+                required
+                value={quizTitle}
+                onChange={(event) => setQuizTitle(event.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="quiz-report-class">Class</Label>
+              <Input
+                id="quiz-report-class"
+                required
+                value={className}
+                onChange={(event) => setClassName(event.target.value)}
+              />
+            </div>
+          </div>
+
+          {results.map((result, index) => (
+            <div
+              key={index}
+              className="grid gap-3 rounded-md border border-slate-200 p-4 dark:border-slate-700 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              <div>
+                <Label htmlFor={`quiz-student-name-${index}`}>Student name</Label>
+                <Input
+                  id={`quiz-student-name-${index}`}
+                  required
+                  value={result.student_name}
+                  onChange={(event) =>
+                    setResults((current) =>
+                      current.map((item, itemIndex) =>
+                        itemIndex === index
+                          ? { ...item, student_name: event.target.value }
+                          : item,
+                      ),
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor={`quiz-student-email-${index}`}>Email</Label>
+                <Input
+                  id={`quiz-student-email-${index}`}
+                  type="email"
+                  value={result.student_email}
+                  onChange={(event) =>
+                    setResults((current) =>
+                      current.map((item, itemIndex) =>
+                        itemIndex === index
+                          ? { ...item, student_email: event.target.value }
+                          : item,
+                      ),
+                    )
+                  }
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor={`quiz-student-score-${index}`}>Score</Label>
+                  <Input
+                    id={`quiz-student-score-${index}`}
+                    type="number"
+                    min="0"
+                    required
+                    value={result.score}
+                    onChange={(event) =>
+                      setResults((current) =>
+                        current.map((item, itemIndex) =>
+                          itemIndex === index
+                            ? { ...item, score: event.target.value }
+                            : item,
+                        ),
+                      )
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`quiz-student-total-${index}`}>Total</Label>
+                  <Input
+                    id={`quiz-student-total-${index}`}
+                    type="number"
+                    min="1"
+                    required
+                    value={result.total}
+                    onChange={(event) =>
+                      setResults((current) =>
+                        current.map((item, itemIndex) =>
+                          itemIndex === index
+                            ? { ...item, total: event.target.value }
+                            : item,
+                        ),
+                      )
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor={`quiz-student-time-${index}`}>
+                  Time taken (seconds)
+                </Label>
+                <Input
+                  id={`quiz-student-time-${index}`}
+                  type="number"
+                  min="0"
+                  value={result.time_taken_seconds}
+                  onChange={(event) =>
+                    setResults((current) =>
+                      current.map((item, itemIndex) =>
+                        itemIndex === index
+                          ? { ...item, time_taken_seconds: event.target.value }
+                          : item,
+                      ),
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor={`quiz-student-submitted-${index}`}>
+                  Submitted at
+                </Label>
+                <Input
+                  id={`quiz-student-submitted-${index}`}
+                  type="datetime-local"
+                  value={result.submitted_at}
+                  onChange={(event) =>
+                    setResults((current) =>
+                      current.map((item, itemIndex) =>
+                        itemIndex === index
+                          ? { ...item, submitted_at: event.target.value }
+                          : item,
+                      ),
+                    )
+                  }
+                />
+              </div>
+              {results.length > 1 && (
+                <div className="flex items-end">
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() =>
+                      setResults((current) =>
+                        current.filter((_, itemIndex) => itemIndex !== index),
+                      )
+                    }
+                  >
+                    <Trash2 size={16} /> Remove student
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {exportError && <p className="text-sm text-red-600">{exportError}</p>}
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() =>
+                setResults((current) => [...current, emptyQuizReportResult()])
+              }
+            >
+              <Plus size={16} /> Add student
+            </Button>
+            <Button type="submit" disabled={exporting}>
+              <Download size={16} />
+              {exporting ? "Exporting..." : "Download Excel report"}
+            </Button>
+          </div>
+        </form>
+      </Card>
     </>
   );
 }

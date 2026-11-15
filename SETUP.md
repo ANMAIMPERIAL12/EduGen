@@ -158,6 +158,8 @@ Set `GROQ_API_KEY` and a compatible `LLM_MODEL` in `quiz-service\.env`, and make
 uvicorn app.main:app --reload --port 8002
 ```
 
+The frontend calls the quiz service through the authenticated backend: quiz generation uses `POST /api/quizzes/generate`, and the teacher AI Reports page exports teacher-entered results through `POST /api/quizzes/export-report`. The backend forwards both requests to the quiz service; the frontend never calls the Python service directly. Check that it is running at <http://localhost:8002/health>.
+
 ### Troubleshooting
 
 | Symptom | What to try |
