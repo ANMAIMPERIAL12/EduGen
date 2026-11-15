@@ -1,0 +1,3200 @@
+{
+  "run_timestamp": "2026-11-15T11:09:49+0530",
+  "config": {
+    "chroma_dir": "E:\\Projects\\EduGen\\rag_service\\eval\\_tmp_chroma",
+    "shared_docs_dir": "E:\\Projects\\EduGen\\rag_service\\data\\shared_docs",
+    "answer_mode": "hybrid",
+    "llm_model": "openai/gpt-oss-120b",
+    "embedding_provider": "local",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dimension": 384,
+    "chunk_size": 800,
+    "chunk_overlap": 120,
+    "top_k": 6,
+    "llm_delay_seconds": 2.5,
+    "judge_enabled": true
+  },
+  "question_counts": {
+    "in_scope": 40,
+    "out_of_scope": 8,
+    "cross_course": 4
+  },
+  "ingested_pdfs": [
+    {
+      "filename": "Computer Networking Notes for Tech Placements.pdf",
+      "course_id": "cn",
+      "ingest_seconds": 2.56,
+      "chunks": 39
+    },
+    {
+      "filename": "DBMS_Notes.pdf",
+      "course_id": "dbms",
+      "ingest_seconds": 3.573,
+      "chunks": 60
+    },
+    {
+      "filename": "oops_java.pdf",
+      "course_id": "oops",
+      "ingest_seconds": 6.055,
+      "chunks": 50
+    },
+    {
+      "filename": "oops_py.pdf",
+      "course_id": "oops",
+      "ingest_seconds": 5.878,
+      "chunks": 46
+    },
+    {
+      "filename": "Operating System Notes Placement.pdf",
+      "course_id": "os",
+      "ingest_seconds": 1.789,
+      "chunks": 30
+    }
+  ],
+  "metrics": {
+    "in_scope": {
+      "n": 40,
+      "retrieval_hit_at_6": {
+        "successes": 36,
+        "n": 40,
+        "percent": 90.0
+      },
+      "mrr": 0.825,
+      "keyword_coverage": {
+        "matched": 97,
+        "expected": 128,
+        "n": 40,
+        "percent": 75.78
+      },
+      "judge": {
+        "n": 40,
+        "correct": {
+          "successes": 38,
+          "n": 40,
+          "percent": 95.0
+        },
+        "correct_or_partial": {
+          "successes": 38,
+          "n": 40,
+          "percent": 95.0
+        },
+        "labels": {
+          "correct": 38,
+          "partially correct": 0,
+          "incorrect": 2
+        }
+      },
+      "citations": {
+        "with_citation": {
+          "successes": 17,
+          "n": 40,
+          "percent": 42.5
+        },
+        "matching_expected_file": {
+          "successes": 17,
+          "n": 40,
+          "percent": 42.5
+        }
+      },
+      "chat_latency_seconds": {
+        "n": 40,
+        "median": 10.117,
+        "p95": 14.032
+      }
+    },
+    "out_of_scope": {
+      "n": 8,
+      "refusal_or_ungrounded": {
+        "successes": 8,
+        "n": 8,
+        "percent": 100.0
+      }
+    },
+    "cross_course_leakage": {
+      "n": 4,
+      "wrong_course_sources": 0
+    }
+  },
+  "courses": {
+    "cn": {
+      "in_scope": {
+        "n": 10,
+        "retrieval_hit_at_6": {
+          "successes": 10,
+          "n": 10,
+          "percent": 100.0
+        },
+        "mrr": 0.95,
+        "keyword_coverage": {
+          "matched": 22,
+          "expected": 32,
+          "n": 10,
+          "percent": 68.75
+        },
+        "judge": {
+          "n": 10,
+          "correct": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "correct_or_partial": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "labels": {
+            "correct": 10,
+            "partially correct": 0,
+            "incorrect": 0
+          }
+        },
+        "citations": {
+          "with_citation": {
+            "successes": 5,
+            "n": 10,
+            "percent": 50.0
+          },
+          "matching_expected_file": {
+            "successes": 5,
+            "n": 10,
+            "percent": 50.0
+          }
+        },
+        "chat_latency_seconds": {
+          "n": 10,
+          "median": 11.174,
+          "p95": 15.018
+        }
+      },
+      "out_of_scope": {
+        "n": 2,
+        "refusal_or_ungrounded": {
+          "successes": 2,
+          "n": 2,
+          "percent": 100.0
+        }
+      },
+      "cross_course": {
+        "n": 1,
+        "wrong_course_sources": 0
+      }
+    },
+    "dbms": {
+      "in_scope": {
+        "n": 10,
+        "retrieval_hit_at_6": {
+          "successes": 10,
+          "n": 10,
+          "percent": 100.0
+        },
+        "mrr": 1.0,
+        "keyword_coverage": {
+          "matched": 25,
+          "expected": 33,
+          "n": 10,
+          "percent": 75.76
+        },
+        "judge": {
+          "n": 10,
+          "correct": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "correct_or_partial": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "labels": {
+            "correct": 10,
+            "partially correct": 0,
+            "incorrect": 0
+          }
+        },
+        "citations": {
+          "with_citation": {
+            "successes": 6,
+            "n": 10,
+            "percent": 60.0
+          },
+          "matching_expected_file": {
+            "successes": 6,
+            "n": 10,
+            "percent": 60.0
+          }
+        },
+        "chat_latency_seconds": {
+          "n": 10,
+          "median": 8.877,
+          "p95": 10.772
+        }
+      },
+      "out_of_scope": {
+        "n": 2,
+        "refusal_or_ungrounded": {
+          "successes": 2,
+          "n": 2,
+          "percent": 100.0
+        }
+      },
+      "cross_course": {
+        "n": 1,
+        "wrong_course_sources": 0
+      }
+    },
+    "oops": {
+      "in_scope": {
+        "n": 10,
+        "retrieval_hit_at_6": {
+          "successes": 6,
+          "n": 10,
+          "percent": 60.0
+        },
+        "mrr": 0.4,
+        "keyword_coverage": {
+          "matched": 25,
+          "expected": 31,
+          "n": 10,
+          "percent": 80.65
+        },
+        "judge": {
+          "n": 10,
+          "correct": {
+            "successes": 8,
+            "n": 10,
+            "percent": 80.0
+          },
+          "correct_or_partial": {
+            "successes": 8,
+            "n": 10,
+            "percent": 80.0
+          },
+          "labels": {
+            "correct": 8,
+            "partially correct": 0,
+            "incorrect": 2
+          }
+        },
+        "citations": {
+          "with_citation": {
+            "successes": 4,
+            "n": 10,
+            "percent": 40.0
+          },
+          "matching_expected_file": {
+            "successes": 4,
+            "n": 10,
+            "percent": 40.0
+          }
+        },
+        "chat_latency_seconds": {
+          "n": 10,
+          "median": 10.676,
+          "p95": 14.618
+        }
+      },
+      "out_of_scope": {
+        "n": 2,
+        "refusal_or_ungrounded": {
+          "successes": 2,
+          "n": 2,
+          "percent": 100.0
+        }
+      },
+      "cross_course": {
+        "n": 1,
+        "wrong_course_sources": 0
+      }
+    },
+    "os": {
+      "in_scope": {
+        "n": 10,
+        "retrieval_hit_at_6": {
+          "successes": 10,
+          "n": 10,
+          "percent": 100.0
+        },
+        "mrr": 0.95,
+        "keyword_coverage": {
+          "matched": 25,
+          "expected": 32,
+          "n": 10,
+          "percent": 78.12
+        },
+        "judge": {
+          "n": 10,
+          "correct": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "correct_or_partial": {
+            "successes": 10,
+            "n": 10,
+            "percent": 100.0
+          },
+          "labels": {
+            "correct": 10,
+            "partially correct": 0,
+            "incorrect": 0
+          }
+        },
+        "citations": {
+          "with_citation": {
+            "successes": 2,
+            "n": 10,
+            "percent": 20.0
+          },
+          "matching_expected_file": {
+            "successes": 2,
+            "n": 10,
+            "percent": 20.0
+          }
+        },
+        "chat_latency_seconds": {
+          "n": 10,
+          "median": 10.356,
+          "p95": 14.032
+        }
+      },
+      "out_of_scope": {
+        "n": 2,
+        "refusal_or_ungrounded": {
+          "successes": 2,
+          "n": 2,
+          "percent": 100.0
+        }
+      },
+      "cross_course": {
+        "n": 1,
+        "wrong_course_sources": 0
+      }
+    }
+  },
+  "privacy": {
+    "passed": 4,
+    "total": 4,
+    "checks": [
+      {
+        "name": "student_a_can_retrieve_private",
+        "passed": true
+      },
+      {
+        "name": "student_b_search_returns_no_private_chunk",
+        "passed": true
+      },
+      {
+        "name": "student_b_chat_returns_no_private_chunk",
+        "passed": true
+      },
+      {
+        "name": "student_a_cannot_retrieve_after_delete",
+        "passed": true
+      }
+    ]
+  },
+  "performance": {
+    "chat_latency_seconds": {
+      "n": 40,
+      "median": 10.117,
+      "p95": 14.032
+    }
+  },
+  "pytest": {
+    "exit_code": 0,
+    "passed": 8,
+    "failed": 0,
+    "summary_found": true
+  },
+  "errors": [],
+  "worst_failures": [
+    {
+      "question_id": "Q0015",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 23
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 19,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 3,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "failure_signals": [
+        "retrieval miss",
+        "judge incorrect",
+        "no citation",
+        "incomplete keyword coverage"
+      ]
+    },
+    {
+      "question_id": "Q0011",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 15
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 21,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 27,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "failure_signals": [
+        "retrieval miss",
+        "judge incorrect",
+        "no citation"
+      ]
+    },
+    {
+      "question_id": "Q0003",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 5,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 5,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 8,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "failure_signals": [
+        "retrieval miss",
+        "no citation",
+        "incomplete keyword coverage"
+      ]
+    },
+    {
+      "question_id": "Q0023",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 19,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 8,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "failure_signals": [
+        "retrieval miss",
+        "no citation"
+      ]
+    },
+    {
+      "question_id": "Q0017",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 8
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "failure_signals": [
+        "no citation",
+        "incomplete keyword coverage"
+      ]
+    }
+  ],
+  "question_results": [
+    {
+      "question_id": "Q0001",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 3,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 2,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 3,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 2,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 1,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 11.306863,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0002",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 1,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 26,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 3,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 14,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 13,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 25,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 4,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 10.082286,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0003",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 5,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 5,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 8,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "retrieval_hit": false,
+      "reciprocal_rank": 0.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 11.829604,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0004",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 1,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 1,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 1,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 2,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 9.943293,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0005",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 3
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 3,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 2,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 1,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 11.695698,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0006",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 4
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 4,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 4,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 23,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 16,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 2,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 23,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 10.772135,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0007",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 8
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 18,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 8,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 19,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.3333333333333333,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 11.155112,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0008",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 2
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 2,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 10.769367,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0009",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 4
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 4,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 13,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 4,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 10.995984,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0010",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 7
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 7,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 8,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 7,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 9,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 8,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 8,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 8.921657,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0011",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 15
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 21,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 27,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": false,
+      "reciprocal_rank": 0.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 10.151258,
+      "judge_label": "incorrect"
+    },
+    {
+      "question_id": "Q0012",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 3
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 2,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 1,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 12.137381,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0013",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 6
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 0,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 11.316918,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0014",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 10
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 10,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 9,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 9,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 10,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 10,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 8,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 8.808159,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0015",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 23
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 19,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 3,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "retrieval_hit": false,
+      "reciprocal_rank": 0.0,
+      "keyword_matches": 0,
+      "keyword_total": 4,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 14.61807,
+      "judge_label": "incorrect"
+    },
+    {
+      "question_id": "Q0016",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 5
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 5,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 4,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 5,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 12,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 2,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 11.05437,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0017",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 8
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 0,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 12.190353,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0018",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 13
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 14,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 26,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 13,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 13,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 25,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 27,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 5,
+      "keyword_total": 5,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 9.981504,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0019",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_java.pdf",
+        "page": 30
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 31,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 30,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 10,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 16,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 15,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 11.057705,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0020",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 6
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 12,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 11,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 8.000298,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0021",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 9
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 6,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 9.075447,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0022",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 15
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 15,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 15,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 20,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 17,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 18,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 21,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 6.007161,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0023",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 1
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 6,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 19,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 8,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": false,
+      "reciprocal_rank": 0.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 13.137178,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0024",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 7
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 12,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 11,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 8,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 1,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 7.245248,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0025",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 11
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 8,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 4,
+      "keyword_total": 4,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 9.65145,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0026",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 18
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 18,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 15,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 26,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 17,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 27,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 13,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 8.749482,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0027",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 7
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 2,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 13,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 4,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 12,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 3,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 7,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.16666666666666666,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 9.200888,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0028",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 8
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 8,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 8,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 8,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 4,
+      "keyword_total": 4,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 14.031608,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0029",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 13
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 13,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 10,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 9,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 10,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 15.018236,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0030",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 21
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 21,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 20,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 11,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 17,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 4,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 15,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 8.778702,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0031",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 13
+      },
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 4,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 13,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 12,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 3,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 2,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 2,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 5.963271,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0032",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 10
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 10,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 9,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 1,
+      "keyword_total": 4,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 11.287105,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0033",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 14
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 14,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 14,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 12,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 7,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 1,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 8.002157,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0034",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 24
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 24,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 12,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 12,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 11,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 5,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 23,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 10.017152,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0035",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 20
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 21,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 24,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 9,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_java.pdf",
+          "page": 20,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-3b952a836059f5f2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 10.294866,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0036",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 11
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 11,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 11,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 10,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 9.37233,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0037",
+      "course_id": "cn",
+      "expected": {
+        "filename": "Computer Networking Notes for Tech Placements.pdf",
+        "page": 16
+      },
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 12,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 16,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 12,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 15,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        },
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared",
+          "doc_id": "shared-eede5341d7fa03fa"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 0.5,
+      "keyword_matches": 4,
+      "keyword_total": 4,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 11.041506,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0038",
+      "course_id": "dbms",
+      "expected": {
+        "filename": "DBMS_Notes.pdf",
+        "page": 27
+      },
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 27,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 26,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 18,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 13,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 17,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        },
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 16,
+          "course_id": "dbms",
+          "scope": "shared",
+          "doc_id": "shared-c7b74ffd1b219cd8"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 8.832306,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0039",
+      "course_id": "oops",
+      "expected": {
+        "filename": "oops_py.pdf",
+        "page": 26
+      },
+      "retrieved": [
+        {
+          "filename": "oops_py.pdf",
+          "page": 26,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 17,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 1,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 24,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 25,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 14,
+          "course_id": "oops",
+          "scope": "shared",
+          "doc_id": "shared-c9b8c4e79dcddedf"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 2,
+      "keyword_total": 3,
+      "has_citation": true,
+      "citation_file_matches": true,
+      "chat_latency_seconds": 8.613202,
+      "judge_label": "correct"
+    },
+    {
+      "question_id": "Q0040",
+      "course_id": "os",
+      "expected": {
+        "filename": "Operating System Notes Placement.pdf",
+        "page": 12
+      },
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 12,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 7,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 11,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 3,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        },
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 6,
+          "course_id": "os",
+          "scope": "shared",
+          "doc_id": "shared-caab6189710790d2"
+        }
+      ],
+      "retrieval_hit": true,
+      "reciprocal_rank": 1.0,
+      "keyword_matches": 3,
+      "keyword_total": 3,
+      "has_citation": false,
+      "citation_file_matches": false,
+      "chat_latency_seconds": 9.917416,
+      "judge_label": "correct"
+    }
+  ],
+  "out_of_scope_results": [
+    {
+      "question_id": "O001",
+      "course_id": "cn",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O002",
+      "course_id": "cn",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O003",
+      "course_id": "dbms",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O004",
+      "course_id": "dbms",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O005",
+      "course_id": "oops",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O006",
+      "course_id": "oops",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O007",
+      "course_id": "os",
+      "ungrounded": true
+    },
+    {
+      "question_id": "O008",
+      "course_id": "os",
+      "ungrounded": true
+    }
+  ],
+  "cross_course_results": [
+    {
+      "question_id": "X001",
+      "course_id": "dbms",
+      "wrong_course_sources": 0,
+      "retrieved": [
+        {
+          "filename": "DBMS_Notes.pdf",
+          "page": 3,
+          "course_id": "dbms",
+          "scope": "shared"
+        }
+      ]
+    },
+    {
+      "question_id": "X002",
+      "course_id": "oops",
+      "wrong_course_sources": 0,
+      "retrieved": [
+        {
+          "filename": "oops_java.pdf",
+          "page": 25,
+          "course_id": "oops",
+          "scope": "shared"
+        },
+        {
+          "filename": "oops_py.pdf",
+          "page": 11,
+          "course_id": "oops",
+          "scope": "shared"
+        }
+      ]
+    },
+    {
+      "question_id": "X003",
+      "course_id": "os",
+      "wrong_course_sources": 0,
+      "retrieved": [
+        {
+          "filename": "Operating System Notes Placement.pdf",
+          "page": 2,
+          "course_id": "os",
+          "scope": "shared"
+        }
+      ]
+    },
+    {
+      "question_id": "X004",
+      "course_id": "cn",
+      "wrong_course_sources": 0,
+      "retrieved": [
+        {
+          "filename": "Computer Networking Notes for Tech Placements.pdf",
+          "page": 11,
+          "course_id": "cn",
+          "scope": "shared"
+        }
+      ]
+    }
+  ],
+  "report_paragraph": "On 40 generated in-scope questions across 4 courses, retrieval achieved hit@6 36/40 (90.00%) and MRR 0.825. Answer keyword coverage was 97/128 expected keywords (75.78%); the LLM judge labeled 38/40 (95.00%) correct and 38/40 (95.00%) correct or partially correct. Citations appeared in 17/40 (42.50%) of answers, and the cited source file matched the expected file in 17/40 (42.50%). The hybrid out-of-scope general-answer/ungrounded criterion passed for 8/8 (100.00%); cross-course leakage was 0 wrong-course sources across 4 questions. Automated privacy checks passed 4/4; chat latency across 40 completed answers was median 10.117 s and p95 14.032 s. The test suite reported 8 passed and 0 failed.",
+  "temporary_store_cleanup_error": "PermissionError",
+  "temporary_store_removed": true
+}

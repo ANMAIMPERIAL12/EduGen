@@ -2,6 +2,7 @@
 .venv/
 __pycache__/
 data/chroma/
+eval/_tmp_chroma/
 data/shared_docs/**/*.pdf
 data/shared_docs/**/*.docx
 data/shared_docs/**/*.pptx

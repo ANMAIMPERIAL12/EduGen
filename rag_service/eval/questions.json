@@ -1,0 +1,557 @@
+{
+  "in_scope": [
+    {
+      "course_id": "cn",
+      "question": "In a star topology, what device do all nodes connect to, and how does the topology's higher cable requirement influence its robustness?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 1,
+      "keywords": [
+        "central device",
+        "more cable",
+        "robust"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "According to the excerpt, what is DBMS defined as?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 1,
+      "keywords": [
+        "software",
+        "storing and retrieving",
+        "users' data",
+        "security measures"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "On which page does the section titled 'Constructors in Java' start?",
+      "source_filename": "oops_java.pdf",
+      "page": 1,
+      "keywords": [
+        "Constructors in Java",
+        "5",
+        "page number"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "Which type of operating system assigns the CPU to a job only after the preceding job has finished execution?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 1,
+      "keywords": [
+        "Batch OS",
+        "CPU",
+        "previous job"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "Which network protocol is employed in a tree topology?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 3,
+      "keywords": [
+        "Ethernet protocol",
+        "tree topology",
+        "network protocol"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "According to the excerpt, how is a candidate key defined?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 4,
+      "keywords": [
+        "candidate key",
+        "minimal attribute(s)",
+        "uniquely identify each tuple"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "What name and age are displayed when the displayInfo() method is called on student2?",
+      "source_filename": "oops_java.pdf",
+      "page": 8,
+      "keywords": [
+        "Anil",
+        "20",
+        "copy constructor"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "According to the excerpt, how is Waiting Time calculated in process scheduling?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 2,
+      "keywords": [
+        "Waiting Time",
+        "Turnaround Time",
+        "Burst Time"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "Which network type is defined as having a range limit of up to 10 meters?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 4,
+      "keywords": [
+        "PAN",
+        "10 meters",
+        "Personal Area Network"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "In the transaction lifecycle described, which state follows the execution of the transaction's final instruction?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 7,
+      "keywords": [
+        "Partially Committed State",
+        "transaction",
+        "final instruction"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "According to the excerpt, what kind of inheritance does an interface allow a class to have?",
+      "source_filename": "oops_java.pdf",
+      "page": 15,
+      "keywords": [
+        "multiple inheritance",
+        "interface",
+        "implement multiple interfaces"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "Which scheduling algorithm assigns each process a fixed time slice in a cyclic manner?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 3,
+      "keywords": [
+        "Round Robin",
+        "fixed time",
+        "cyclic"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "What three principles does the excerpt state are used to determine the seven layers of the OSI model?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 6,
+      "keywords": [
+        "new layer for different abstraction",
+        "well-defined function per layer",
+        "function based on standardized protocols"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "Which type of serializability is defined by converting a non‑serial schedule into a serial schedule through swapping non‑conflicting operations?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 10,
+      "keywords": [
+        "Conflict Serializability",
+        "non-conflicting operations",
+        "serial schedule"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "What four lines are printed to the console when the Main class is executed?",
+      "source_filename": "oops_java.pdf",
+      "page": 23,
+      "keywords": [
+        "This animal eats food.",
+        "The dog barks.",
+        "This animal eats food.",
+        "The cat meows."
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "According to the excerpt, which condition describes a resource that cannot be shared by more than one process at a time?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 5,
+      "keywords": [
+        "Mutual Exclusion",
+        "non-sharable",
+        "one process"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "What are the three primary responsibilities of the session layer?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 8,
+      "keywords": [
+        "beginning",
+        "maintaining",
+        "ending"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "Which SQL DDL command is used to create database objects such as tables, indexes, views, stored procedures, functions, and triggers?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 13,
+      "keywords": [
+        "CREATE",
+        "database objects",
+        "tables",
+        "indexes",
+        "triggers"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "What message is printed to the console when the method call myAnimal.sound() is executed?",
+      "source_filename": "oops_java.pdf",
+      "page": 30,
+      "keywords": [
+        "Animal makes a sound",
+        "myAnimal",
+        "sound"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "Which memory management technique keeps in memory only the instructions and data needed at a given moment?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 6,
+      "keywords": [
+        "overlays",
+        "required at a given time",
+        "memory"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "In the TCP/IP reference model, which layer determines which links such as serial lines or classic Ethernet should be used?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 9,
+      "keywords": [
+        "Link",
+        "serial lines",
+        "Ethernet"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "Which SQL operator displays a record only when all the conditions separated by it evaluate to true?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 15,
+      "keywords": [
+        "AND",
+        "all conditions",
+        "TRUE"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "On which page does the 'Inheritance in Python' section begin?",
+      "source_filename": "oops_py.pdf",
+      "page": 1,
+      "keywords": [
+        "Inheritance in Python",
+        "6",
+        "page"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "What condition in fixed and variable partitioning causes external fragmentation, as described in the excerpt?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 7,
+      "keywords": [
+        "entire process",
+        "contiguous memory location",
+        "external fragmentation"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "According to the excerpt, what are the four main elements that constitute a protocol?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 11,
+      "keywords": [
+        "Syntax",
+        "Semantics",
+        "Timing",
+        "DHCP"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "When the DELETE statement is executed without a WHERE clause, what happens to the rows and the table's structure?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 18,
+      "keywords": [
+        "all rows",
+        "table structure",
+        "indexes"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "When a Car object invokes its drive method, what message is printed?",
+      "source_filename": "oops_py.pdf",
+      "page": 7,
+      "keywords": [
+        "drive",
+        "Car",
+        "Car is moving"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "What are the total numbers of page faults observed with FIFO when using three page frames compared to four page frames for the given reference string?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 8,
+      "keywords": [
+        "9",
+        "10",
+        "FIFO",
+        "Belady's anomaly"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "Which transport protocol does the browser use to perform the DNS lookup for the URL's IP address?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 13,
+      "keywords": [
+        "UDP",
+        "DNS lookup",
+        "IP address"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "Which LIKE pattern matches values that begin with the letter 'a' and have a minimum length of three characters?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 21,
+      "keywords": [
+        "a__%",
+        "starts with a",
+        "at least 3 characters"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "When the Car object is created and its start() and stop() methods are invoked, what messages are printed?",
+      "source_filename": "oops_py.pdf",
+      "page": 13,
+      "keywords": [
+        "Car starts with a key",
+        "Car stops when brakes are applied",
+        "Car"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "According to the excerpt, what does the CLOOK algorithm do with the disk arm after it services the last request in front of the head?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 10,
+      "keywords": [
+        "CLOOK",
+        "disk arm",
+        "jumps to other end's last request",
+        "prevents extra delay"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "In the excerpt, which reliability factor is described as indicating that the network has been attacked by an unexpected event such as fire or earthquake?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 14,
+      "keywords": [
+        "Catastrophe",
+        "fire",
+        "earthquake"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "What default behavior does the UNION operator have regarding duplicate rows?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 24,
+      "keywords": [
+        "UNION",
+        "distinct values",
+        "duplicate rows"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "What capability does multiple inheritance provide to a class as described in the excerpt?",
+      "source_filename": "oops_py.pdf",
+      "page": 20,
+      "keywords": [
+        "multiple inheritance",
+        "inherit",
+        "more than one parent class"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "Which kernel type is described as a combination of microkernel and monolithic kernel?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 11,
+      "keywords": [
+        "Macro Kernel",
+        "microkernel",
+        "monolithic kernel"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "Which utility program allows checking connectivity between network devices by using their IP address or name?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 16,
+      "keywords": [
+        "ping",
+        "utility program",
+        "connectivity",
+        "IP address"
+      ]
+    },
+    {
+      "course_id": "dbms",
+      "question": "In the ALTER TABLE syntax, which keyword sequence is used to delete an existing column from a table?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 27,
+      "keywords": [
+        "DROP",
+        "COLUMN",
+        "ALTER TABLE"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "What effect does defining __slots__ in a Python class have on attribute creation and memory usage?",
+      "source_filename": "oops_py.pdf",
+      "page": 26,
+      "keywords": [
+        "restricts new attributes",
+        "saves memory",
+        "AttributeError"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "Which kind of fragmentation occurs when systems use variable-size allocation units?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 12,
+      "keywords": [
+        "external fragmentation",
+        "variable-size allocation units",
+        "fragmentation"
+      ]
+    }
+  ],
+  "out_of_scope": [
+    {
+      "course_id": "cn",
+      "question": "What is the capital city of Portugal?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "cn",
+      "question": "How many sides does a hexagon have?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "dbms",
+      "question": "What is the chemical symbol for gold?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "dbms",
+      "question": "Why does the Moon appear bright at night?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "oops",
+      "question": "At what temperature does pure water freeze at standard pressure?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "oops",
+      "question": "Who wrote the novel Pride and Prejudice?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "os",
+      "question": "What is the largest planet in our solar system?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    },
+    {
+      "course_id": "os",
+      "question": "How many minutes are in two hours?",
+      "source_filename": null,
+      "page": null,
+      "keywords": []
+    }
+  ],
+  "cross_course": [
+    {
+      "course_id": "dbms",
+      "question": "In a star topology, what device do all nodes connect to, and how does the topology's higher cable requirement influence its robustness?",
+      "source_filename": "Computer Networking Notes for Tech Placements.pdf",
+      "page": 1,
+      "keywords": [
+        "central device",
+        "more cable",
+        "robust"
+      ]
+    },
+    {
+      "course_id": "oops",
+      "question": "According to the excerpt, what is DBMS defined as?",
+      "source_filename": "DBMS_Notes.pdf",
+      "page": 1,
+      "keywords": [
+        "software",
+        "storing and retrieving",
+        "users' data",
+        "security measures"
+      ]
+    },
+    {
+      "course_id": "os",
+      "question": "On which page does the section titled 'Constructors in Java' start?",
+      "source_filename": "oops_java.pdf",
+      "page": 1,
+      "keywords": [
+        "Constructors in Java",
+        "5",
+        "page number"
+      ]
+    },
+    {
+      "course_id": "cn",
+      "question": "Which type of operating system assigns the CPU to a job only after the preceding job has finished execution?",
+      "source_filename": "Operating System Notes Placement.pdf",
+      "page": 1,
+      "keywords": [
+        "Batch OS",
+        "CPU",
+        "previous job"
+      ]
+    }
+  ]
+}

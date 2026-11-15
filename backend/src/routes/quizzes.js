@@ -26,6 +26,34 @@ const handleUpload = (req, res, next) => {
   });
 };
 
+const getServiceUrl = () =>
+  (process.env.QUIZ_SERVICE_URL || 'http://localhost:8002').replace(/\/$/, '');
+
+const getServiceHeaders = (headers = {}) => {
+  const serviceHeaders = { ...headers };
+  if (process.env.QUIZ_SERVICE_API_KEY) {
+    serviceHeaders['X-API-Key'] = process.env.QUIZ_SERVICE_API_KEY;
+  }
+  return serviceHeaders;
+};
+
+const getUpstreamErrorMessage = (error) => {
+  let data = error.response?.data;
+  if (Buffer.isBuffer(data)) {
+    try {
+      data = JSON.parse(data.toString('utf8'));
+    } catch {
+      data = null;
+    }
+  }
+
+  return (
+    data?.detail ||
+    data?.error ||
+    (error.response ? 'Quiz service request failed.' : 'Unable to connect to the Python quiz service.')
+  );
+};
+
 router.post(
   '/generate',
   authMiddleware,
@@ -82,22 +110,11 @@ router.post(
       form.append('num_questions', String(numQuestions));
       form.append('difficulty', difficulty);
 
-      const serviceUrl =
-        process.env.QUIZ_SERVICE_URL || 'http://localhost:8002';
-
-      const headers = {
-        ...form.getHeaders(),
-      };
-
-      if (process.env.QUIZ_SERVICE_API_KEY) {
-        headers['X-API-Key'] = process.env.QUIZ_SERVICE_API_KEY;
-      }
-
       const response = await axios.post(
-        `${serviceUrl.replace(/\/$/, '')}/generate-quiz`,
+        `${getServiceUrl()}/generate-quiz`,
         form,
         {
-          headers,
+          headers: getServiceHeaders(form.getHeaders()),
           maxBodyLength: Infinity,
           timeout: 180000,
         }
@@ -111,20 +128,47 @@ router.post(
         error.response?.data || error.message
       );
 
-      if (error.response) {
-        return res.status(error.response.status).json({
-          error:
-            error.response.data?.detail ||
-            error.response.data?.error ||
-            'Quiz generation failed.',
-        });
-      }
-
-      return res.status(502).json({
-        error: 'Unable to connect to the Python quiz service.',
+      return res.status(error.response?.status || 502).json({
+        error: getUpstreamErrorMessage(error),
       });
     }
   }
 );
+
+router.post('/export-report', authMiddleware, async (req, res) => {
+  const { quiz_title: quizTitle, class_name: className, results } = req.body || {};
+  if (
+    typeof quizTitle !== 'string' ||
+    !quizTitle.trim() ||
+    typeof className !== 'string' ||
+    !className.trim() ||
+    !Array.isArray(results)
+  ) {
+    return res.status(400).json({
+      error: 'Quiz title, class name, and a results array are required.',
+    });
+  }
+
+  try {
+    const response = await axios.post(
+      `${getServiceUrl()}/export-report`,
+      req.body,
+      {
+        headers: getServiceHeaders({ 'Content-Type': 'application/json' }),
+        responseType: 'arraybuffer',
+        timeout: 120000,
+      }
+    );
+
+    res.set('Content-Type', response.headers['content-type'] || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.set('Content-Disposition', 'attachment; filename="quiz_report.xlsx"');
+    return res.send(response.data);
+  } catch (error) {
+    console.error('Quiz report export error:', error.response?.data || error.message);
+    return res.status(error.response?.status || 502).json({
+      error: getUpstreamErrorMessage(error),
+    });
+  }
+});
 
 module.exports = router;
