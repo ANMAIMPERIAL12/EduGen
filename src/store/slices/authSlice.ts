@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { demoUsers } from "../../data/mockData";
-import { authService, AuthSession } from "../../services/authService";
+import { authService, AuthSession, LoginResult } from "../../services/authService";
 import { Role, User } from "../../types";
 
 interface AuthState {
   user: User | null;
+  challengeToken: string | null;
   status: "idle" | "loading" | "error";
   error: string | null;
 }
@@ -20,6 +20,10 @@ interface RegistrationDetails extends Credentials {
 }
 
 function loadStoredUser(): User | null {
+  if (!localStorage.getItem("edugen-token")) {
+    localStorage.removeItem("edugen-user");
+    return null;
+  }
   const storedUser = localStorage.getItem("edugen-user");
   if (!storedUser) return null;
 
@@ -44,6 +48,7 @@ function loadStoredUser(): User | null {
       name: value.name,
       email: value.email,
       role: value.role,
+      totpEnabled: "totpEnabled" in value && value.totpEnabled === true,
       department:
         "department" in value && typeof value.department === "string"
           ? value.department
@@ -62,6 +67,7 @@ function loadStoredUser(): User | null {
 
 const initialState: AuthState = {
   user: loadStoredUser(),
+  challengeToken: null,
   status: "idle",
   error: null,
 };
@@ -77,7 +83,7 @@ function persistSession(session: AuthSession, state: AuthState) {
 }
 
 export const loginWithEmail = createAsyncThunk<
-  AuthSession,
+  LoginResult,
   Credentials,
   { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
@@ -100,8 +106,12 @@ export const registerWithEmail = createAsyncThunk<
   }
 });
 
-export const loginDemo = createAsyncThunk("auth/demo", async (role: Role) =>
-  authService.demoLogin(role),
+export const verifyTotpLogin = createAsyncThunk<AuthSession, { challengeToken: string; code: string }, { rejectValue: string }>(
+  "auth/verifyTotpLogin",
+  async (details, { rejectWithValue }) => {
+    try { return await authService.verifyTotpLogin(details.challengeToken, details.code); }
+    catch (error) { return rejectWithValue(getErrorMessage(error)); }
+  },
 );
 
 const authSlice = createSlice({
@@ -110,6 +120,7 @@ const authSlice = createSlice({
   reducers: {
     logout(state) {
       state.user = null;
+      state.challengeToken = null;
       state.status = "idle";
       state.error = null;
       localStorage.removeItem("edugen-user");
@@ -118,6 +129,14 @@ const authSlice = createSlice({
     setUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
       localStorage.setItem("edugen-user", JSON.stringify(action.payload));
+    },
+    setTotpEnabled(state, action: PayloadAction<boolean>) {
+      if (!state.user) return;
+      state.user.totpEnabled = action.payload;
+      localStorage.setItem("edugen-user", JSON.stringify(state.user));
+    },
+    clearMfaChallenge(state) {
+      state.challengeToken = null;
     },
     clearAuthError(state) {
       state.error = null;
@@ -131,7 +150,12 @@ const authSlice = createSlice({
       })
       .addCase(loginWithEmail.fulfilled, (state, action) => {
         state.status = "idle";
-        persistSession(action.payload, state);
+        if ("mfaRequired" in action.payload) {
+          state.challengeToken = action.payload.challengeToken;
+        } else {
+          state.challengeToken = null;
+          persistSession(action.payload, state);
+        }
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
         state.status = "error";
@@ -149,23 +173,21 @@ const authSlice = createSlice({
         state.status = "error";
         state.error = action.payload ?? action.error.message ?? "Registration failed.";
       })
-      .addCase(loginDemo.pending, (state) => {
+      .addCase(verifyTotpLogin.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(loginDemo.fulfilled, (state, action) => {
+      .addCase(verifyTotpLogin.fulfilled, (state, action) => {
         state.status = "idle";
-        state.error = null;
-        state.user = action.payload;
-        localStorage.setItem("edugen-user", JSON.stringify(action.payload));
-        localStorage.removeItem("edugen-token");
+        state.challengeToken = null;
+        persistSession(action.payload, state);
       })
-      .addCase(loginDemo.rejected, (state, action) => {
+      .addCase(verifyTotpLogin.rejected, (state, action) => {
         state.status = "error";
-        state.error = action.error.message ?? "Demo login failed.";
+        state.error = action.payload ?? action.error.message ?? "Verification failed.";
       });
   },
 });
 
-export const { logout, setUser, clearAuthError } = authSlice.actions;
+export const { logout, setUser, setTotpEnabled, clearMfaChallenge, clearAuthError } = authSlice.actions;
 export default authSlice.reducer;

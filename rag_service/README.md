@@ -1,8 +1,8 @@
 # LMS RAG Service
 
 A standalone RAG (Retrieval-Augmented Generation) chatbot service for the AI LMS. Students upload documents,
-and course material can be pre-loaded for everyone. Questions are answered **only from retrieved context**,
-with citations (file name and page).
+and course material can be pre-loaded for everyone. Strict-mode answers use retrieved context only; the LMS tutor
+uses hybrid answer mode and may answer from general knowledge when its documents do not cover a question.
 
 **Stack:** FastAPI · LangChain · ChromaDB · Groq (free LLM) · local sentence-transformers embeddings (free)
 
@@ -37,9 +37,13 @@ INGESTION (when a document is added)
   file -> extract text (per page) -> split into chunks -> embed each chunk -> store in Chroma + metadata
 
 QUERY (when a student asks)
-  question -> (rewrite using chat history) -> embed -> filtered similarity search
+  question + recent history -> embed -> filtered similarity search
           -> top chunks as context -> LLM answers with citations -> answer + sources
 ```
+
+The LMS passes recent conversation turns from PostgreSQL, so follow-ups survive RAG restarts and worker changes.
+RAG uses history to shape follow-up retrieval without an extra LLM rewrite call. The local embedding model is
+warmed at startup; the first startup may take longer while the model is downloaded and initialized.
 
 Two kinds of documents live in the same vector store, separated by metadata:
 
@@ -160,13 +164,20 @@ The response contains `answer`, `sources` (file, page, snippet) and a `session_i
 | `LOCAL_EMBEDDING_MODEL`             | `BAAI/bge-small-en-v1.5`         | Local embedding model                                                |
 | `OPENAI_API_KEY`, `EMBEDDING_MODEL` | none                             | Only if `EMBEDDING_PROVIDER=openai`                                  |
 | `SERVICE_API_KEY`                   | `change-me`                      | Shared secret in the `X-API-Key` header. Empty = auth off (dev only) |
+| `ENVIRONMENT`                       | `development`                    | Set to `production` to require `SERVICE_API_KEY`                      |
+| `CORS_ORIGINS`                      | `http://localhost:5173`          | JSON list of browser origins allowed to call this service             |
 | `CHROMA_DIR`                        | `./data/chroma`                  | Where the vector database is stored on disk                          |
 | `COLLECTION_NAME`                   | `lms_documents`                  | Base name; the embedding provider is appended                        |
 | `SHARED_DOCS_DIR`                   | `./data/shared_docs`             | Folder read by `ingest_shared`                                       |
 | `CHUNK_SIZE` / `CHUNK_OVERLAP`      | `800` / `120`                    | Chunking (characters)                                                |
 | `TOP_K`                             | `6`                              | Chunks retrieved per question                                        |
 | `MAX_UPLOAD_MB`                     | `20`                             | Upload size limit                                                    |
-| `MAX_HISTORY_TURNS`                 | `6`                              | Chat turns remembered per session                                    |
+| `MAX_HISTORY_TURNS`                 | `6`                              | Direct-API chat turns remembered per session                         |
+| `MAX_HISTORY_CHARS`                 | `6000`                           | Maximum recent-history text passed to the model                       |
+| `MAX_CHAT_SESSIONS` / `CHAT_SESSION_TTL_SECONDS` | `2000` / `21600`      | Bounds direct-API in-memory session history                           |
+| `MAX_EXTRACTED_CHARS_PER_FILE` / `MAX_CHUNKS_PER_DOCUMENT` | `2000000` / `2500` | Limits indexing work per upload                                      |
+| `LLM_TIMEOUT_SECONDS` / `LLM_MAX_RETRIES` | `45` / `1`                  | Bounds provider request time and retries                              |
+| `LLM_MAX_OUTPUT_TOKENS`             | `1200`                           | Limits generated answer size                                          |
 
 ---
 
@@ -263,9 +274,9 @@ plus `global`, and that student's own private uploads for `os`. It never searche
 
 ## 7. How a question is answered
 
-1. **Rewrite follow-ups.** If the session has history, the LLM rewrites a follow-up like "give an example"
-   into a standalone question, because vector search has no memory.
-2. **Embed the question** with the same local model.
+1. **Resolve follow-ups without another model call.** Recent turns go to the answer model; short follow-ups
+   that refer back to the previous question also include that question in the retrieval query.
+2. **Embed the retrieval query** with the same local model.
 3. **Filtered search.** Chroma returns the `TOP_K` (6) nearest chunks, restricted by the access filter
    (shared documents of the course or `global`, plus the student's own private documents).
 4. **Build context.** The chunks are numbered `[1]..[6]` with file name and page.

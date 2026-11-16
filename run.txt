@@ -1,0 +1,17 @@
+front: npm run dev
+back: cd backend -> npm run dev
+rag: 
+
+cd C:\Users\KIIT0001\Desktop\EduGen
+.\.venv\Scripts\Activate.ps1
+uvicorn app.main:app --reload --port 8000
+
+sql: 
+
+Get-Service *postgres*
+Start-Service postgresql-x64-17
+
+
+
+
+cmd /c run.bat

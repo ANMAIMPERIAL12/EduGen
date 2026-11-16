@@ -12,11 +12,17 @@ def get_embeddings() -> Embeddings:
 
         return HuggingFaceEmbeddings(model_name=s.local_embedding_model)
 
+    if s.embedding_provider != "openai":
+        raise ValueError("EMBEDDING_PROVIDER must be 'local' or 'openai'")
+    if not s.openai_api_key:
+        raise ValueError("OPENAI_API_KEY is required when EMBEDDING_PROVIDER=openai")
+
     from langchain_openai import OpenAIEmbeddings
 
     return OpenAIEmbeddings(
         model=s.embedding_model,
         api_key=s.openai_api_key,
-        max_retries=6,  # free-tier rate limits -> retry with backoff
+        request_timeout=s.llm_timeout_seconds,
+        max_retries=s.llm_max_retries,
         chunk_size=100,
     )

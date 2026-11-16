@@ -173,6 +173,15 @@ async function listMessages(conversationId) {
   return result.rows;
 }
 
+async function listRecentMessages(conversationId, limit = 12) {
+  const result = await pool.query(
+    `SELECT role, RIGHT(text, 6000) AS text FROM tutor_messages WHERE conversation_id = $1
+     ORDER BY created_at DESC, id DESC LIMIT $2`,
+    [conversationId, limit],
+  );
+  return result.rows.reverse();
+}
+
 async function saveConversationTurn(conversationId, question, answer, sources, grounded) {
   const client = await pool.connect();
   try {
@@ -251,6 +260,7 @@ module.exports = {
   getConversation,
   listConversations,
   listMessages,
+  listRecentMessages,
   saveConversationTurn,
   deleteConversation,
   createSharedDocument,

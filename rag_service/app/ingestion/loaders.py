@@ -11,14 +11,17 @@ def load_file(path: Path, original_name: str | None = None) -> list[Document]:
     if ext not in SUPPORTED_EXTENSIONS:
         raise ValueError(f"Unsupported file type: {ext}. Allowed: {sorted(SUPPORTED_EXTENSIONS)}")
 
-    if ext == ".pdf":
-        pages = _load_pdf(path)
-    elif ext == ".docx":
-        pages = _load_docx(path)
-    elif ext == ".pptx":
-        pages = _load_pptx(path)
-    else:
-        pages = [(None, path.read_text(encoding="utf-8", errors="ignore"))]
+    try:
+        if ext == ".pdf":
+            pages = _load_pdf(path)
+        elif ext == ".docx":
+            pages = _load_docx(path)
+        elif ext == ".pptx":
+            pages = _load_pptx(path)
+        else:
+            pages = [(None, path.read_text(encoding="utf-8", errors="ignore"))]
+    except Exception as error:
+        raise ValueError(f"Could not read '{name}'. Check that the file is valid and not password-protected.") from error
 
     docs = []
     for page, text in pages:

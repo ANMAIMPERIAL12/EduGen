@@ -12,5 +12,7 @@ def get_llm() -> ChatOpenAI:
         api_key=s.llm_api_key,
         base_url=s.llm_base_url,
         temperature=0.2,
-        max_retries=6,  # free-tier 429s -> retry with backoff
+        timeout=s.llm_timeout_seconds,
+        max_retries=s.llm_max_retries,
+        max_tokens=s.llm_max_output_tokens,
     )

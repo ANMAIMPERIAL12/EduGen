@@ -242,6 +242,7 @@ exports.chat = async (req, res) => {
   const userId = getUserId(req);
   let conversation;
   let isNewConversation = false;
+  let history = [];
   try {
     if (conversationId !== undefined && conversationId !== null) {
       if (!/^\d+$/.test(String(conversationId))) {
@@ -251,6 +252,10 @@ exports.chat = async (req, res) => {
       if (!conversation || conversation.courseId !== courseId) {
         return res.status(404).json({ error: 'Conversation not found for this course.' });
       }
+      history = (await tutorModel.listRecentMessages(conversation.id, 12)).map((message) => ({
+        role: message.role,
+        text: message.text,
+      }));
     } else {
       const ragSessionId = randomUUID();
       conversation = await tutorModel.createConversation({
@@ -289,6 +294,7 @@ exports.chat = async (req, res) => {
       courseId: course.ragCourseId,
       sessionId: conversation.ragSessionId,
       docIds: allowedDocIds,
+      history,
       mode: 'hybrid',
     });
     const sources = Array.isArray(result.sources) ? result.sources : [];

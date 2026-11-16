@@ -20,7 +20,7 @@ function getConfig(timeout = 30000) {
 }
 
 // Ask a question using RAG
-async function chat({ question, userId, courseId, sessionId, docIds, mode = 'strict' }) {
+async function chat({ question, userId, courseId, sessionId, docIds, history, mode = 'strict' }) {
   const config = getConfig(90000);
 
   const response = await axios.post(
@@ -31,6 +31,7 @@ async function chat({ question, userId, courseId, sessionId, docIds, mode = 'str
       course_id: courseId || 'global',
       session_id: sessionId || null,
       doc_ids: docIds || null,
+      history: history || null,
       mode
     },
     {

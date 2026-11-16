@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { Award, BarChart3, CalendarCheck, CheckCircle2, Download, Eye, FileUp, Trash2 } from "lucide-react";
 import { ActivityAreaChart, PerformanceLineChart, SubjectBarChart } from "../../components/charts/Charts";
 import { AIInsightCard } from "../../components/ai/AIComponents";
@@ -14,6 +14,8 @@ import { EmptyState } from "../../components/ui/EmptyState";
 import { Input, Label, Select } from "../../components/ui/Input";
 import { ProgressBar } from "../../components/ui/ProgressBar";
 import { StatCard } from "../../components/ui/StatCard";
+import { authService } from "../../services/authService";
+import { setTotpEnabled } from "../../store/slices/authSlice";
 
 export function SubjectsPage() {
   return (
@@ -364,14 +366,42 @@ export function ProfilePage() {
 }
 
 export function SettingsPage() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   const [tab, setTab] = useState("Account");
   const [saved, setSaved] = useState("");
+  const [qrCode, setQrCode] = useState("");
+  const [totpCode, setTotpCode] = useState("");
+  const [securityError, setSecurityError] = useState("");
+  const [securityLoading, setSecurityLoading] = useState(false);
+  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
+
+  async function startTotpSetup() {
+    setSecurityLoading(true);
+    setSecurityError("");
+    try { setQrCode(await authService.setupTotp()); }
+    catch (error) { setSecurityError(error instanceof Error ? error.message : "Unable to start setup."); }
+    finally { setSecurityLoading(false); }
+  }
+
+  async function activateTotp(event: FormEvent) {
+    event.preventDefault();
+    setSecurityLoading(true);
+    setSecurityError("");
+    try {
+      setRecoveryCodes(await authService.enableTotp(totpCode));
+      dispatch(setTotpEnabled(true));
+      setQrCode("");
+      setSaved("Two-factor authentication is enabled for your account.");
+    } catch (error) { setSecurityError(error instanceof Error ? error.message : "Unable to verify the code."); }
+    finally { setSecurityLoading(false); }
+  }
   return (
     <>
       <PageHeader title="Settings" subtitle="Account, appearance, notifications and security." />
       <div className="flex flex-wrap gap-2">{["Account", "Appearance", "Notifications", "Security"].map((item) => <Button key={item} variant={tab === item ? "primary" : "secondary"} onClick={() => setTab(item)}>{item}</Button>)}</div>
       <Card>
-        {tab === "Appearance" ? <div className="grid gap-3 sm:grid-cols-3">{["Light", "Dark", "System"].map((item) => <Button key={item} variant="secondary" onClick={() => setSaved(`${item} appearance selected.`)}>{item}</Button>)}</div> : tab === "Notifications" ? <div className="space-y-3">{["Email notifications", "Assignment reminders", "Quiz results", "AI recommendations"].map((item) => <label key={item} className="flex items-center gap-3"><input type="checkbox" defaultChecked onChange={() => setSaved("Notification preferences updated.")} /> {item}</label>)}</div> : tab === "Security" ? <div className="grid gap-4 sm:grid-cols-2"><Input placeholder="New password" type="password" /><Button onClick={() => setSaved("Password changed for demo.")}>Change password</Button><label className="flex items-center gap-3"><input type="checkbox" onChange={() => setSaved("Two-factor authentication preference updated.")} /> Two-factor authentication</label></div> : <div className="grid gap-4 sm:grid-cols-2"><Input placeholder="Full name" defaultValue="Radhika Singhania" /><Input placeholder="Email" defaultValue="student@edugen.ai" /><Button onClick={() => setSaved("Account changes saved.")}>Save changes</Button></div>}
+        {tab === "Appearance" ? <div className="grid gap-3 sm:grid-cols-3">{["Light", "Dark", "System"].map((item) => <Button key={item} variant="secondary" onClick={() => setSaved(`${item} appearance selected.`)}>{item}</Button>)}</div> : tab === "Notifications" ? <div className="space-y-3">{["Email notifications", "Assignment reminders", "Quiz results", "AI recommendations"].map((item) => <label key={item} className="flex items-center gap-3"><input type="checkbox" defaultChecked onChange={() => setSaved("Notification preferences updated.")} /> {item}</label>)}</div> : tab === "Security" ? <div className="space-y-5"><div><h2 className="font-semibold">Two-Factor Authentication</h2><p className="mt-1 text-sm text-slate-500">{user?.totpEnabled ? "Enabled" : "Not enabled"}</p><p className="mt-2 text-sm text-slate-500">Add an additional layer of security to your EduGen AI account with an authenticator app.</p></div>{user?.totpEnabled ? <><p className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-700">Your authenticator app is connected.</p>{recoveryCodes.length > 0 && <div className="rounded-md border border-amber-200 bg-amber-50 p-4"><p className="font-semibold text-amber-900">Save your recovery codes</p><p className="mt-1 text-sm text-amber-800">These codes are shown once. Store them somewhere safe. Each code can be used only once.</p><ul className="mt-3 grid grid-cols-2 gap-2 font-mono text-sm">{recoveryCodes.map((recoveryCode) => <li key={recoveryCode}>{recoveryCode}</li>)}</ul></div>}</> : <><Button onClick={startTotpSetup} disabled={securityLoading || Boolean(qrCode)}>{securityLoading ? "Preparing..." : qrCode ? "Authenticator setup started" : "Enable Authenticator App"}</Button>{qrCode && <div className="grid gap-5 sm:grid-cols-[auto_1fr] sm:items-start"><img src={qrCode} alt="Authenticator QR Code" className="h-48 w-48 rounded-md border bg-white p-2" /><form className="space-y-3" onSubmit={activateTotp}><p className="text-sm text-slate-600">Scan this QR code with Google Authenticator, then enter the six-digit code shown in the app.</p><Input aria-label="Six-digit authenticator code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={totpCode} onChange={(event) => setTotpCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" required /><Button disabled={securityLoading || totpCode.length !== 6}>{securityLoading ? "Verifying..." : "Verify and enable"}</Button></form></div>}</>}{securityError && <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-700">{securityError}</p>}</div> : <div className="grid gap-4 sm:grid-cols-2"><Input placeholder="Full name" defaultValue={user?.name ?? ""} /><Input placeholder="Email" defaultValue={user?.email ?? ""} /><Button onClick={() => setSaved("Account changes saved.")}>Save changes</Button></div>}
         {saved && <p className="mt-4 rounded-md bg-emerald-50 p-3 text-sm text-emerald-700">{saved}</p>}
       </Card>
     </>

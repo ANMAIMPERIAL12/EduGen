@@ -1,0 +1,533 @@
+Absolutely. This is a great security feature to add to EduGen AI. You can integrate Google Authenticator-based Two-Factor Authentication (2FA) without using any Google API or paying for an authentication service.
+
+The technology is called TOTP (Time-Based One-Time Password). Google Authenticator generates a six-digit code using a shared secret and the current time. The code typically changes every 30 seconds. Your backend independently calculates the expected code and checks whether it matches. 
+MDN+1
+
+1. How the EduGen login flow should work
+Step 1 — Login
+
+Enter email and password
+
+
+Step 2 — Backend verification
+
+Express validates the credentials
+
+
+Step 3 — Two-factor authentication
+
+User enters the six-digit Google Authenticator code
+
+
+Step 4 — Backend verifies TOTP
+
+Only a valid code allows authentication to finish
+
+
+Authenticated
+Step 5 — Student Dashboard
+
+Issue the normal JWT and redirect to the dashboard
+
+
+The important distinction: do not issue the normal JWT immediately after password verification when 2FA is enabled.
+2. What we will use
+Your current EduGen architecture already has the necessary components:
+Component	Responsibility
+React + TypeScript	Login and OTP screens
+Node.js + Express	Authentication APIs
+PostgreSQL	Store encrypted authenticator secrets
+otplib	Generate and verify TOTP
+qrcode	Generate the QR code
+
+Your public backend currently returns a JWT directly from authController.login(). We will modify that behavior. 
+GitHub+1
+
+3. Backend implementation
+Step A — Install dependencies
+Open a terminal in VS Code:
+cd backend
+npm install otplib qrcode
+
+
+We'll use otplib for TOTP and qrcode for generating the QR code. The current otplib API supports Google Authenticator-compatible secrets, QR provisioning URIs and asynchronous verification. 
+GitHub+1
+
+Step B — Update the PostgreSQL user table
+Open:
+
+backend/src/models/userModel.js
+
+Add these columns to your existing table initialization:
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS totp_secret_encrypted TEXT;
+
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS totp_pending_secret_encrypted TEXT;
+
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS totp_enabled BOOLEAN DEFAULT FALSE;
+
+
+Why three columns?
+- totp_secret_encrypted: The user's permanent encrypted authenticator secret.
+- totp_pending_secret_encrypted: Temporary secret while setting up the authenticator.
+- totp_enabled: Whether 2FA has been activated.
+Important: Your project already creates the users table using CREATE TABLE IF NOT EXISTS. That statement will not modify an existing table, so the ALTER TABLE statements are necessary. Your server already calls User.initialize() during startup. 
+GitHub+1
+
+
+Also update findByEmail() and findById() to return these additional fields:
+totp_secret_encrypted AS "totpSecretEncrypted",
+totp_pending_secret_encrypted AS "totpPendingSecretEncrypted",
+totp_enabled AS "totpEnabled"
+
+
+Add two model methods:
+async function savePendingTotpSecret(id, secret) {
+  await pool.query(
+    `UPDATE users
+     SET totp_pending_secret_encrypted = $1
+     WHERE id = $2`,
+    [secret, id]
+  );
+}
+
+async function enableTotp(id, secret) {
+  await pool.query(
+    `UPDATE users
+     SET totp_secret_encrypted = $1,
+         totp_pending_secret_encrypted = NULL,
+         totp_enabled = TRUE
+     WHERE id = $2`,
+    [secret, id]
+  );
+}
+
+
+Export both methods along with your existing model functions.
+Step C — Encrypt the authenticator secret
+Never store the authenticator secret as plain text in PostgreSQL.
+
+Create:
+
+backend/src/utils/totpCrypto.js
+const crypto = require('crypto');
+
+function getKey() {
+  const key = Buffer.from(process.env.TOTP_ENCRYPTION_KEY || '', 'hex');
+
+  if (key.length !== 32) {
+    throw new Error('Invalid TOTP encryption key');
+  }
+
+  return key;
+}
+
+function encryptSecret(secret) {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv('aes-256-gcm', getKey(), iv);
+
+  const encrypted = Buffer.concat([
+    cipher.update(secret, 'utf8'),
+    cipher.final()
+  ]);
+
+  return [
+    iv.toString('hex'),
+    cipher.getAuthTag().toString('hex'),
+    encrypted.toString('hex')
+  ].join(':');
+}
+
+function decryptSecret(value) {
+  const [iv, tag, data] = value.split(':');
+
+  const decipher = crypto.createDecipheriv(
+    'aes-256-gcm',
+    getKey(),
+    Buffer.from(iv, 'hex')
+  );
+
+  decipher.setAuthTag(Buffer.from(tag, 'hex'));
+
+  return Buffer.concat([
+    decipher.update(Buffer.from(data, 'hex')),
+    decipher.final()
+  ]).toString('utf8');
+}
+
+module.exports = { encryptSecret, decryptSecret };
+
+
+Generate an encryption key using:
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+
+Add the generated value to your backend .env:
+TOTP_ENCRYPTION_KEY=YOUR_GENERATED_64_CHARACTER_HEX_KEY
+
+
+Keep this key private, never commit it to GitHub, and back it up securely. Losing it means you cannot decrypt existing authenticator secrets.
+Step D — Add the TOTP endpoints
+Open:
+
+backend/src/controllers/authController.js
+
+Add these imports:
+const QRCode = require('qrcode');
+
+const {
+  encryptSecret,
+  decryptSecret
+} = require('../utils/totpCrypto');
+
+
+Because your backend uses CommonJS, we'll load the current asynchronous otplib API using dynamic imports:
+
+1. Generate the QR code
+async function setupTotp(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (user.totpEnabled) {
+      return res.status(409).json({ error: 'Authenticator already enabled' });
+    }
+
+    const { generateSecret, generateURI } = await import('otplib');
+
+    const secret = generateSecret();
+
+    const uri = generateURI({
+      issuer: 'EduGen AI',
+      label: user.email,
+      secret
+    });
+
+    const qrCode = await QRCode.toDataURL(uri);
+
+    await User.savePendingTotpSecret(
+      user.id,
+      encryptSecret(secret)
+    );
+
+    res.json({ qrCode });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to generate QR code' });
+  }
+}
+
+
+2. Verify and activate the authenticator
+async function enableTotp(req, res) {
+  try {
+    const { code } = req.body;
+
+    if (typeof code !== 'string' || !/^\d{6}$/.test(code)) {
+      return res.status(400).json({ error: 'Enter a valid six-digit code' });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user?.totpPendingSecretEncrypted) {
+      return res.status(400).json({ error: 'Setup authenticator first' });
+    }
+
+    const { verify } = await import('otplib');
+
+    const secret = decryptSecret(user.totpPendingSecretEncrypted);
+
+    const result = await verify({
+      secret,
+      token: code,
+      epochTolerance: 30
+    });
+
+    if (!result.valid) {
+      return res.status(400).json({ error: 'Invalid verification code' });
+    }
+
+    await User.enableTotp(
+      user.id,
+      user.totpPendingSecretEncrypted
+    );
+
+    res.json({ message: 'Two-factor authentication enabled' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to enable authentication' });
+  }
+}
+
+
+Step E — Modify your existing login function
+This is the most important change.
+
+In your existing login() controller, after verifying the email and password, replace the immediate JWT response with:
+if (user.totpEnabled) {
+  const challengeToken = jwt.sign(
+    { id: user.id, purpose: 'totp_login' },
+    process.env.JWT_SECRET,
+    { expiresIn: '5m' }
+  );
+
+  return res.json({
+    mfaRequired: true,
+    challengeToken
+  });
+}
+
+return res.json({
+  token: signToken(user),
+  user: toUserDTO(user)
+});
+
+
+Now users without 2FA enabled can still log in normally, while users with 2FA enabled must complete the second step.
+
+3. Verify the login code
+
+Add this controller function:
+async function verifyTotpLogin(req, res) {
+  try {
+    const { challengeToken, code } = req.body;
+
+    if (
+      typeof code !== 'string' ||
+      !/^\d{6}$/.test(code) ||
+      typeof challengeToken !== 'string'
+    ) {
+      return res.status(400).json({ error: 'Invalid verification request' });
+    }
+
+    const payload = jwt.verify(
+      challengeToken,
+      process.env.JWT_SECRET
+    );
+
+    if (payload.purpose !== 'totp_login') {
+      return res.status(401).json({ error: 'Invalid login challenge' });
+    }
+
+    const user = await User.findById(payload.id);
+
+    if (!user?.totpEnabled || !user.totpSecretEncrypted) {
+      return res.status(401).json({ error: 'Authentication failed' });
+    }
+
+    const { verify } = await import('otplib');
+
+    const secret = decryptSecret(user.totpSecretEncrypted);
+
+    const result = await verify({
+      secret,
+      token: code,
+      epochTolerance: 30
+    });
+
+    if (!result.valid) {
+      return res.status(401).json({ error: 'Invalid authentication code' });
+    }
+
+    return res.json({
+      token: signToken(user),
+      user: toUserDTO(user)
+    });
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired login challenge' });
+  }
+}
+
+
+Export all three new controller functions:
+module.exports = {
+  register,
+  login,
+  me,
+  forgotPassword,
+  resetPassword,
+  setupTotp,
+  enableTotp,
+  verifyTotpLogin
+};
+
+
+One more important safeguard: update backend/src/middleware/auth.js to reject JWTs containing a purpose field. The short-lived challenge token must never authorize access to normal application APIs.
+Step F — Register the new API routes
+Open:
+
+backend/src/routes/auth.js
+
+Import the new controller functions and add:
+const {
+  setupTotp,
+  enableTotp,
+  verifyTotpLogin
+} = require('../controllers/authController');
+
+const totpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+router.post('/totp/setup', authMiddleware, setupTotp);
+router.post('/totp/enable', authMiddleware, totpLimiter, enableTotp);
+router.post('/totp/verify-login', totpLimiter, verifyTotpLogin);
+
+
+The resulting endpoints will be:
+Method	Endpoint	Purpose
+POST	/api/auth/totp/setup	Generate QR code
+POST	/api/auth/totp/enable	Activate 2FA
+POST	/api/auth/login	Validate email and password
+POST	/api/auth/totp/verify-login	Validate login code
+
+Also rate-limit your normal login endpoint.
+
+4. Frontend implementation
+This is where your screenshots come into play.
+
+You already have a polished login page and a student dashboard. We don't need to redesign either one. We need an additional page between them.
+
+
+
+
+
+
+
+
+
+
+Existing login page
+Keep your current design.
+
+
+
+
+
+
+
+
+
+
+New verification page
+Six-digit code entry screen.
+
+Create a React page called:
+
+TwoFactorVerify.tsx
+
+It should have:
+- EduGen AI branding.
+- Heading: "Two-Factor Authentication".
+- Text: "Enter the six-digit code from Google Authenticator."
+- Six-digit numeric input.
+- Verify button.
+- Return to login option.
+The frontend should call:
+POST http://localhost:5000/api/auth/login
+
+
+with:
+{
+  "email": "student@edugen.ai",
+  "password": "your-password"
+}
+
+
+Then inspect the response.
+
+If 2FA is enabled:
+{
+  "mfaRequired": true,
+  "challengeToken": "temporary-token"
+}
+
+
+Navigate to the new verification page. Keep the challenge token temporarily in application memory, not as the normal authentication token.
+
+After the user submits their code, call:
+POST http://localhost:5000/api/auth/totp/verify-login
+
+
+with:
+{
+  "challengeToken": "temporary-token",
+  "code": "123456"
+}
+
+
+On success, the backend returns the regular JWT and user information. Store your authenticated state and redirect according to the user's role:
+if (user.role === "student") {
+  navigate("/student/dashboard");
+} else if (user.role === "teacher") {
+  navigate("/teacher/dashboard");
+} else {
+  navigate("/admin/dashboard");
+}
+
+
+Do not consider the user authenticated just because the challenge token exists. Your protected routes must require the final JWT.
+5. How does the user initially connect Google Authenticator?
+Add a section to your existing Settings or Profile page:
+
+Settings → Security → Two-Factor Authentication
+Two-Factor Authentication
+Not enabled
+
+Add an additional layer of security to your EduGen AI account.
+Enable Authenticator App
+Enrollment workflow
+1. Click Enable Authenticator App.
+2. The backend generates a secret and QR code.
+3. Open Google Authenticator on your phone and scan the QR code.
+4. Enter the displayed six-digit code in EduGen.
+5. The backend verifies the code and activates 2FA.
+Enabled after successful verification
+
+The setup endpoint returns the QR code as a data URL. Display it using:
+<img src={qrCode} alt="Authenticator QR Code" />
+
+
+Google Authenticator reads the otpauth:// URI embedded in that QR code. 
+otplib+1
+
+6. Important security considerations
+Before treating this as production-ready, address these points:
+1. Rate limiting: Restrict password and OTP attempts to prevent brute-force guessing.
+2. Secret encryption: Use AES-256-GCM and keep the encryption key outside PostgreSQL.
+3. Token separation: Never use the temporary MFA challenge token to access dashboard APIs.
+4. Replay protection: Track the last accepted TOTP time step and prevent the same code being accepted more than once.
+5. Recovery: Provide backup recovery codes for users who lose their phones.
+6. HTTPS: Use HTTPS when deploying. Avoid transmitting authentication data over unencrypted connections.
+The examples above establish the basic MFA flow; replay prevention, single-use challenge tracking and recovery codes should be added before production deployment.
+
+7. My recommended implementation order for EduGen
+Don't try to change all the files simultaneously. Build and test the feature in this order:
+Implementation checklist
+0/10
+
+
+
+[ ] Install otplib and qrcode
+[ ] Add PostgreSQL TOTP columns
+[ ] Implement encrypted secret storage
+[ ] Generate QR code and enroll authenticator
+[ ] Verify code and enable 2FA
+[ ] Modify existing login response
+[ ] Create the six-digit verification page
+[ ] Connect frontend and backend
+[ ] Test login with and without 2FA
+[ ] Add recovery codes and replay protection
+
+One thing I noticed in your repository: the public main branch's src/services/authService.ts still uses mock demo users rather than calling your Express authentication API. It also contains the demo-role login functionality visible in your screenshot. Make sure the real login flow uses the backend, and disable those demo shortcuts outside development; otherwise, they could bypass your new security layer. 
+GitHub+1
+
+
+My suggestion: Implement this as a dedicated authentication module in EduGen, rather than putting OTP logic inside the dashboard. That keeps the security layer independent of student, teacher and admin functionality.
+
+The best next step is to share your current local authController.js, userModel.js, authService.ts and auth Redux slice. I can then give you the exact modified files matching your current implementation, instead of making you manually merge snippets.

@@ -16,6 +16,7 @@ import {
   LoginPage,
   RegisterPage,
   ResetPasswordPage,
+  TwoFactorVerifyPage,
 } from "../pages/auth/AuthPages";
 import { LandingPage } from "../pages/LandingPage";
 import {
@@ -58,6 +59,7 @@ export function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/two-factor" element={<TwoFactorVerifyPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />

@@ -1,15 +1,15 @@
 import { FormEvent, useState } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { GraduationCap, Shield, UserRound } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { Input, Label, Select } from "../../components/ui/Input";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   clearAuthError,
-  loginDemo,
+  clearMfaChallenge,
   loginWithEmail,
   registerWithEmail,
+  verifyTotpLogin,
 } from "../../store/slices/authSlice";
 import { requestPasswordReset, submitPasswordReset } from "../../services/authService";
 import { Role } from "../../types";
@@ -62,7 +62,6 @@ export function LoginPage() {
   const { error, status } = useAppSelector((state) => state.auth);
   const loading = status === "loading";
   const [email, setEmail] = useState("");
-  const [toast, setToast] = useState("");
   const [password, setPassword] = useState("");
 
   if (user) return <Navigate to={`/${user.role}/dashboard`} replace />;
@@ -70,15 +69,12 @@ export function LoginPage() {
   async function login(event: FormEvent) {
     event.preventDefault();
     const action = await dispatch(loginWithEmail({ email, password }));
-    if (loginWithEmail.fulfilled.match(action))
-      navigate(`/${action.payload.user.role}/dashboard`);
-  }
-
-  async function demo(role: Role) {
-    const action = await dispatch(loginDemo(role));
-    if (loginDemo.fulfilled.match(action)) {
-      setToast(`Continuing as ${role}`);
-      navigate(`/${role}/dashboard`);
+    if (loginWithEmail.fulfilled.match(action)) {
+      if ("mfaRequired" in action.payload) {
+        navigate("/two-factor");
+      } else {
+        navigate(`/${action.payload.user.role}/dashboard`);
+      }
     }
   }
 
@@ -123,28 +119,54 @@ export function LoginPage() {
           {error}
         </p>
       )}
-      <div className="mt-5 grid gap-2">
-        <Button variant="secondary" onClick={() => demo("student")}>
-          <UserRound size={18} /> Continue as Student
-        </Button>
-        <Button variant="secondary" onClick={() => demo("teacher")}>
-          <GraduationCap size={18} /> Continue as Teacher
-        </Button>
-        <Button variant="secondary" onClick={() => demo("admin")}>
-          <Shield size={18} /> Continue as Admin
-        </Button>
-      </div>
-      {toast && (
-        <p className="mt-3 rounded-md bg-emerald-50 p-3 text-sm text-emerald-700">
-          {toast}
-        </p>
-      )}
       <p className="mt-5 text-center text-sm text-slate-500">
         New here?{" "}
         <Link className="text-brand-600" to="/register">
           Create an account
         </Link>
       </p>
+    </AuthShell>
+  );
+}
+
+export function TwoFactorVerifyPage() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { status, error, challengeToken } = useAppSelector((state) => state.auth);
+  const [code, setCode] = useState("");
+  const [useRecoveryCode, setUseRecoveryCode] = useState(false);
+
+  if (!challengeToken) return <Navigate to="/login" replace />;
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    const result = await dispatch(verifyTotpLogin({ challengeToken: challengeToken!, code }));
+    if (verifyTotpLogin.fulfilled.match(result)) {
+      navigate(`/${result.payload.user.role}/dashboard`, { replace: true });
+    }
+  }
+
+  return (
+    <AuthShell title="Two-Factor Authentication" subtitle="Enter the six-digit code from Google Authenticator.">
+      <form className="mt-6 space-y-4" onSubmit={submit}>
+        <div>
+          <Label htmlFor="totp-code">{useRecoveryCode ? "Recovery code" : "Authentication code"}</Label>
+          <Input id="totp-code" type="text" inputMode={useRecoveryCode ? "text" : "numeric"} autoComplete={useRecoveryCode ? "off" : "one-time-code"}
+            pattern={useRecoveryCode ? "[A-Fa-f0-9]{4}(-[A-Fa-f0-9]{4}){5}" : "[0-9]{6}"} maxLength={useRecoveryCode ? 29 : 6} value={code}
+            onChange={(event) => setCode(useRecoveryCode
+              ? event.target.value.replace(/[^a-f\d]/gi, "").slice(0, 16).toUpperCase().replace(/(.{4})(?=.)/g, "$1-")
+              : event.target.value.replace(/\D/g, "").slice(0, 6))}
+            placeholder={useRecoveryCode ? "0000-0000-0000-0000-0000-0000" : "000000"} required />
+        </div>
+        <Button className="w-full" disabled={status === "loading" || (useRecoveryCode ? code.length !== 29 : code.length !== 6)}>
+          {status === "loading" ? "Verifying..." : "Verify"}
+        </Button>
+      </form>
+      {error && <p role="alert" className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      <button type="button" className="mt-4 text-sm text-brand-600" onClick={() => { setUseRecoveryCode(!useRecoveryCode); setCode(""); }}>
+        {useRecoveryCode ? "Use an authenticator code" : "Use a recovery code"}
+      </button>
+      <p className="mt-5 text-center text-sm"><Link className="text-brand-600" to="/login" onClick={() => dispatch(clearMfaChallenge())}>Return to login</Link></p>
     </AuthShell>
   );
 }

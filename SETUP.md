@@ -76,12 +76,21 @@ RAG_SERVICE_URL=http://localhost:8000
 RAG_API_KEY=<the same value as rag_service SERVICE_API_KEY>
 ```
 
+Generate a private TOTP encryption key and add the output to `backend\.env` as `TOTP_ENCRYPTION_KEY`:
+
+```powershell
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Keep this key outside source control and back it up securely. Existing authenticator secrets cannot be decrypted if the key is lost.
+
 The backend environment variables are:
 
 | Variable | Purpose |
 |---|---|
 | `DATABASE_URL` | PostgreSQL connection string for the `edugen` database |
 | `JWT_SECRET` | Secret used to sign login tokens |
+| `TOTP_ENCRYPTION_KEY` | Private 32-byte hex key used to encrypt authenticator secrets |
 | `PORT` | Backend HTTP port (defaults to 5000) |
 | `RAG_SERVICE_URL` | URL of the RAG service |
 | `RAG_API_KEY` | Must match the RAG service's `SERVICE_API_KEY` |
@@ -136,9 +145,9 @@ The course IDs and corresponding folders are:
 
 Course documents are local data, not setup dependencies. Copy files into `rag_service\data\shared_docs\<course_id>\` and run `python -m scripts.ingest_shared` from `rag_service`, or log in as a teacher and upload materials at `/teacher/resources`. The `.gitignore` rules exclude local PDF, DOCX, and PPTX files. Ignore rules do not untrack documents already committed, so any existing tracked course files need to be removed from Git separately.
 
-### Demo accounts
+### Accounts and two-factor authentication
 
-There are no seeded PostgreSQL accounts. Register a student or teacher through the app to use authenticated backend features. The frontend also has local demo-mode roles: Radhika Singhania (student), Kunal Anand (teacher), and Radhika Singhania (admin). These are UI previews only and do not provide backend authentication tokens.
+There are no seeded PostgreSQL accounts. Register a student or teacher through the app to use authenticated backend features. To enable two-factor authentication, sign in, open **Settings → Security**, choose **Enable Authenticator App**, scan the QR code with an authenticator app, and confirm its six-digit code. Save the one-time recovery codes shown after setup. Later logins require an authenticator or unused recovery code. The backend does not call a Google API.
 
 ### Optional quiz-generation service
 

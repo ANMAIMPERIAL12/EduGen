@@ -6,6 +6,7 @@ export interface User {
   email: string;
   role: Role;
   department: string;
+  totpEnabled?: boolean;
   avatar?: string;
 }
 
