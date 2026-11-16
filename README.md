@@ -15,3 +15,5 @@ Set-Location rag_service
 ```
 
 For an authenticated backend integration check, see [docs/ai-tutor-rag.md](./docs/ai-tutor-rag.md).
+
+Password reset needs a few extra mail settings. See "Password reset" in [SETUP.md](./SETUP.md).

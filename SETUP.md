@@ -218,3 +218,33 @@ npm run dev
 ```
 
 For quiz generation, follow the optional quiz-service steps above using `source .venv/bin/activate`, `cp .env.example .env`, and set the matching quiz API key. Restart any service after changing its `.env`. The separate `ai-service` directory is an unimplemented scaffold in this checkout and is not part of the runnable local stack.
+
+
+
+### Password reset (forgot password)
+
+The login page's "Forgot password?" link sends a reset email. It needs the backend, the frontend and PostgreSQL running (steps 1, 3 and 4 above). The `password_resets` table is created automatically when the backend starts.
+
+Add these variables to `backend\.env` (names are in `backend\.env.example`):
+
+| Variable | Purpose |
+| --- | --- |
+| `FRONTEND_URL` | Frontend address used to build the link in the email, for example `http://localhost:5173` |
+| `SMTP_HOST` | Mail server, for example `smtp.gmail.com`. Leave empty to skip sending email |
+| `SMTP_PORT` | `587` (use `465` if your network blocks 587) |
+| `SMTP_USER` | Sender mailbox address |
+| `SMTP_PASS` | SMTP password. For Gmail, use an App Password (requires 2-Step Verification), not the account password |
+| `MAIL_FROM` | Sender shown in the inbox, for example `EduGen <you@gmail.com>`, same address as `SMTP_USER` for Gmail |
+
+Restart the backend after changing `.env`.
+
+**Without SMTP:** leave `SMTP_HOST` empty. No email is sent, and the reset link is printed in the backend terminal as `[DEV] Password reset link for ...`. Open that link in the browser.
+
+**To test it:**
+
+1. Register an account with an email address you can read.
+2. Open `/forgot-password`, enter that email and submit.
+3. Open the email (or copy the link from the backend terminal) and set a new password on the reset page.
+4. Log in with the new password.
+
+Reset links expire after 15 minutes and work once. Requesting a new link invalidates the previous one. Both endpoints are limited to 5 requests per 15 minutes per IP.
