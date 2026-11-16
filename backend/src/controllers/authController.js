@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const PasswordReset = require('../models/passwordResetModel');
+const { sendResetEmail } = require('../utils/mailer');
 
 const SALT_ROUNDS = 10;
 const ALLOWED_SIGNUP_ROLES = ['student', 'teacher'];
@@ -105,4 +107,51 @@ async function me(req, res) {
   }
 }
 
-module.exports = { register, login, me };
+async function forgotPassword(req, res) {
+  const { email } = req.body || {};
+  if (typeof email !== 'string' || !EMAIL_RE.test(email.trim().toLowerCase())) {
+    return res.status(400).json({ error: 'a valid email is required' });
+  }
+
+  // same response whether or not the account exists, so emails can't be enumerated
+  const generic = { message: 'If that email is registered, a reset link has been sent.' };
+
+  try {
+    const user = await User.findByEmail(email.trim().toLowerCase());
+    if (user) {
+      try {
+        const token = await PasswordReset.createToken(user.id, 15);
+        const base = process.env.FRONTEND_URL || 'http://localhost:5173';
+        await sendResetEmail(user.email, `${base}/reset-password?token=${token}`);
+      } catch (mailErr) {
+        console.error('forgot-password failed:', mailErr);
+      }
+    }
+    return res.json(generic);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'server error' });
+  }
+}
+
+async function resetPassword(req, res) {
+  const { token, password } = req.body || {};
+  if (typeof token !== 'string' || !/^[a-f0-9]{64}$/.test(token)) {
+    return res.status(400).json({ error: 'invalid or expired reset link' });
+  }
+  if (typeof password !== 'string' || password.length < 8 || password.length > 72) {
+    return res.status(400).json({ error: 'password must be 8-72 characters' });
+  }
+
+  try {
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    const ok = await PasswordReset.consumeAndSetPassword(token, passwordHash);
+    if (!ok) return res.status(400).json({ error: 'invalid or expired reset link' });
+    return res.json({ message: 'password updated, you can now log in' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'server error' });
+  }
+}
+
+module.exports = { register, login, me, forgotPassword, resetPassword };

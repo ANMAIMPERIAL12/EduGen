@@ -85,3 +85,21 @@ export const authService = {
     return demoUsers[role];
   },
 };
+
+export async function requestPasswordReset(email: string): Promise<string> {
+  try {
+    const response = await axiosClient.post<{ message: string }>("/auth/forgot-password", { email });
+    return response.data.message;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error));
+  }
+}
+
+export async function submitPasswordReset(token: string, password: string): Promise<string> {
+  try {
+    const response = await axiosClient.post<{ message: string }>("/auth/reset-password", { token, password });
+    return response.data.message;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error));
+  }
+}

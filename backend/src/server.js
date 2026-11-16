@@ -5,7 +5,7 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const User = require('./models/userModel');
-
+const PasswordReset = require('./models/passwordResetModel');
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
 const assignmentRoutes = require('./routes/assignments');
@@ -33,6 +33,7 @@ const PORT = process.env.PORT || 5000;
 async function startServer() {
   try {
     await User.initialize();
+    await PasswordReset.initialize();
     app.listen(PORT, () => {
       console.log(`Backend running on port ${PORT}`);
     });

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { GraduationCap, Shield, UserRound } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
@@ -11,6 +11,7 @@ import {
   loginWithEmail,
   registerWithEmail,
 } from "../../store/slices/authSlice";
+import { requestPasswordReset, submitPasswordReset } from "../../services/authService";
 import { Role } from "../../types";
 
 function AuthShell({
@@ -266,31 +267,115 @@ export function RegisterPage() {
 
 
 export function ForgotPasswordPage() {
-  const [sent, setSent] = useState(false);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      setMessage(await requestPasswordReset(email));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "The request failed.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <AuthShell
       title="Reset password"
       subtitle="Enter your email and receive a secure reset link."
     >
-      <form className="mt-6 space-y-4">
+      <form className="mt-6 space-y-4" onSubmit={submit}>
         <div>
-          <Label>Email</Label>
-          <Input type="email" placeholder="student@edugen.ai" />
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
         </div>
-        <Button type="button" className="w-full" onClick={() => setSent(true)}>
-          Send reset link
+        <Button className="w-full" disabled={loading}>
+          {loading ? "Sending..." : "Send reset link"}
         </Button>
       </form>
-      {sent && (
-        <p className="mt-3 rounded-md bg-sky-50 p-3 text-sm text-sky-700">
-          Reset instructions sent to your demo inbox.
-        </p>
+      {message && (
+        <p className="mt-3 rounded-md bg-sky-50 p-3 text-sm text-sky-700">{message}</p>
+      )}
+      {error && (
+        <p role="alert" className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>
       )}
       <p className="mt-5 text-center text-sm">
-        <Link className="text-brand-600" to="/login">
-          Back to login
-        </Link>
+        <Link className="text-brand-600" to="/login">Back to login</Link>
       </p>
+    </AuthShell>
+  );
+}
+
+export function ResetPasswordPage() {
+  const [params] = useSearchParams();
+  const token = params.get("token") || "";
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    setError("");
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    setLoading(true);
+    try {
+      setMessage(await submitPasswordReset(token, password));
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "The request failed.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <AuthShell title="Choose a new password" subtitle="Use at least 8 characters.">
+      <form className="mt-6 space-y-4" onSubmit={submit}>
+        <div>
+          <Label htmlFor="password">New password</Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="confirm">Confirm password</Label>
+          <Input
+            id="confirm"
+            type="password"
+            value={confirm}
+            onChange={(event) => setConfirm(event.target.value)}
+          />
+        </div>
+        <Button className="w-full" disabled={loading || !token}>
+          {loading ? "Saving..." : "Update password"}
+        </Button>
+      </form>
+      {message && (
+        <p className="mt-3 rounded-md bg-sky-50 p-3 text-sm text-sky-700">{message}</p>
+      )}
+      {error && (
+        <p role="alert" className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>
+      )}
     </AuthShell>
   );
 }

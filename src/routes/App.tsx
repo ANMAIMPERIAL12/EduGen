@@ -15,6 +15,7 @@ import {
   ForgotPasswordPage,
   LoginPage,
   RegisterPage,
+  ResetPasswordPage,
 } from "../pages/auth/AuthPages";
 import { LandingPage } from "../pages/LandingPage";
 import {
@@ -59,6 +60,7 @@ export function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       <Route path="/student" element={<DashboardLayout role="student" />}>
         <Route index element={<Navigate to="/student/dashboard" replace />} />
